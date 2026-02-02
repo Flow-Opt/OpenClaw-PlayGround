@@ -1,0 +1,12 @@
+[project]
+name = "llm-router"
+version = "0.1.0"
+description = "CLI-first orchestration layer that routes LLM requests across multiple providers with failover"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.scripts]
+llm-run = "llm_router.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
