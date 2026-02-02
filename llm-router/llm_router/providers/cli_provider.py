@@ -49,6 +49,7 @@ class CliProvider(Provider):
                 capture_output=True,
                 text=True,
                 timeout=timeout_seconds,
+                stdin=subprocess.DEVNULL,
             )
         except subprocess.TimeoutExpired as e:
             self._last_err = str(e)
