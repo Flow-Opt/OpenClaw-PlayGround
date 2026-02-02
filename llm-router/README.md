@@ -2,7 +2,7 @@
 
 A small **CLI-first LLM router** that runs a prompt against multiple providers with **graceful failover**.
 
-- Order (configurable): **OpenAI Codex → Anthropic Claude → Google Gemini**
+- Order (configurable): **OpenAI Codex → Google Gemini** (Claude optional)
 - Uses **official CLIs/APIs only** (no bypassing rate limits, no ToS violations)
 - Detects limit/health errors and fails over safely
 - Writes **structured JSONL logs** (secrets redacted; prompts not logged by default)
@@ -54,7 +54,11 @@ Example:
 
 ```yaml
 router:
-  providers: [openai_codex, anthropic_claude, google_gemini]
+  providers: [openai_codex, google_gemini]
+
+# Enable Claude later if desired:
+#   - add `anthropic_claude` back into router.providers
+#   - ensure `claude -p "Say OK" --output-format text` works reliably
   routing_policy: failover_then_degrade
   log_dir: ~/.llm-router/logs
   log_prompts: false

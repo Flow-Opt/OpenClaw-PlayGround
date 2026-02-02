@@ -43,7 +43,7 @@ def load_config(path: str | None) -> Config:
     if not cfg_path.exists():
         # Minimal defaults; user can create config later.
         router = RouterConfig(
-            providers=["openai_codex", "anthropic_claude", "google_gemini"],
+            providers=["openai_codex", "google_gemini"],
             routing_policy="failover_then_degrade",
             log_dir="~/.llm-router/logs",
             log_prompts=False,
@@ -53,8 +53,9 @@ def load_config(path: str | None) -> Config:
         )
         providers = {
             "openai_codex": ProviderConfig(mode="cli", cli_cmd="codex", model_primary="gpt-5-codex", model_degraded="gpt-5-codex-mini"),
-            "anthropic_claude": ProviderConfig(mode="cli", cli_cmd="claude", model_primary="claude-3-7-sonnet", model_degraded="claude-3-5-haiku"),
             "google_gemini": ProviderConfig(mode="cli", cli_cmd="gemini", model_primary="gemini-2.0-flash", model_degraded="gemini-2.0-flash-lite"),
+            # Claude is supported but disabled by default until the local CLI runs reliably in your environment.
+            # "anthropic_claude": ProviderConfig(mode="cli", cli_cmd="claude", model_primary="claude-3-7-sonnet", model_degraded="claude-3-5-haiku"),
         }
         return Config(router=router, providers=providers)
 
