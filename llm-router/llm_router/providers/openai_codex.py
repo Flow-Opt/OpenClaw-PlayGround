@@ -11,7 +11,14 @@ class OpenAICodexProvider(CliProvider):
     """
 
     def build_command(self, prompt: str, model: str, max_output_tokens: int) -> list[str]:
-        # Placeholder. Replace with official Codex CLI invocation you use.
-        # Example (illustrative only):
-        # return [self.cli_cmd, "run", "--model", model, "--max-tokens", str(max_output_tokens), prompt]
-        return [self.cli_cmd, "--help"]
+        # Official Codex CLI supports non-interactive runs via `codex exec`.
+        # We'll capture the assistant's final message via `--output-last-message`.
+        #
+        # Note: Codex CLI currently does not expose a stable "max output tokens" flag;
+        # we keep it in the router API but do not enforce it here.
+        cmd: list[str] = [self.cli_cmd, "exec", "--skip-git-repo-check", "--sandbox", "read-only"]
+        if model:
+            cmd += ["--model", model]
+        # prompt is the trailing argument
+        cmd += [prompt]
+        return cmd

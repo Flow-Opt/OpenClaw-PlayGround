@@ -5,7 +5,9 @@ from .cli_provider import CliProvider
 
 class AnthropicClaudeProvider(CliProvider):
     def build_command(self, prompt: str, model: str, max_output_tokens: int) -> list[str]:
-        # Placeholder. Replace with official Claude CLI invocation you use.
-        # Example (illustrative only):
-        # return [self.cli_cmd, "--model", model, "--max-tokens", str(max_output_tokens), "--print", prompt]
-        return [self.cli_cmd, "--help"]
+        # Claude Code supports non-interactive output with `-p/--print`.
+        cmd: list[str] = [self.cli_cmd, "-p", "--output-format", "text", "--permission-mode", "default"]
+        if model:
+            cmd += ["--model", model]
+        cmd += [prompt]
+        return cmd

@@ -52,6 +52,8 @@ def main(argv: list[str] | None = None) -> None:
     except ProviderError as e:
         # Print user-friendly message, do not dump raw tokens.
         sys.stderr.write(str(e) + "\n")
+        if args.verbose and e.raw:
+            sys.stderr.write("--- raw ---\n" + str(e.raw) + "\n")
         if e.provider == "router" and "All providers are currently at usage limits" in e.message:
             sys.stderr.write(e.message + "\n")
             sys.exit(2)
